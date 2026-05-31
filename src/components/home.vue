@@ -14,11 +14,11 @@
             :router="true"
         >
             <el-menu-item index="/address_book">通讯录</el-menu-item>
-            <el-menu-item index="1">分组管理</el-menu-item>
-            <el-menu-item index="1">个人中心</el-menu-item>
-            <el-menu-item index="1">字典管理</el-menu-item>
-            <el-menu-item index="1">账户管理</el-menu-item>
-            <el-menu-item index="1">统计</el-menu-item>
+            <el-menu-item index="/group_management">分组管理</el-menu-item>
+            <el-menu-item index="/Personal_Center">个人中心</el-menu-item>
+            <el-menu-item index="/Dictionary_Management">字典管理</el-menu-item>
+            <el-menu-item index="/Account_Management">账户管理</el-menu-item>
+            <el-menu-item index="/statistics">统计</el-menu-item>
             <el-dropdown>
             <span>1</span>
             <template #dropdown>

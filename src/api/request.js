@@ -9,7 +9,7 @@ const request = axios.create({
 
 request.interceptors.request.use(config => {
     const token = localStorage.getItem('token')
-    console.log('请求URL:', config.url, 'token:', token)
+    // console.log('请求URL:', config.url, 'token:', token)
     if (token) {
         config.headers.token = token
     }

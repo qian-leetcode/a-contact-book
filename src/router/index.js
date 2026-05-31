@@ -15,8 +15,36 @@ const routes = [
                 name:'address_book',
                 component: () => import('../components/address_book.vue'),
                 children:[
-
+                    {
+                        path:'/group',
+                        name:'group',
+                        component: () => import('../components/addresss_book/group.vue'),
+                    },{
+                        path:'letter_sort',
+                        name:'letter_sort',
+                        component: () => import('../components/addresss_book/letter_sort.vue'),
+                    }
                 ]
+            },{
+                path: '/group_management',
+                name:'group_management',
+                component: () => import('../components/group_management.vue'),
+            },{
+                path:'/Personal_Center',
+                name:'personal_center',
+                component: () => import('../components/personal_center.vue'),
+            },{
+                path:'/Dictionary_Management',
+                name:'dictionary_management',
+                component:() => import('../components/Dictionary_Management.vue'),
+            },{
+                path: '/Account_Management',
+                name:'account_management',
+                component:()=>import('../components/Account_Management.vue'),
+            },{
+            path: '/statistics',
+                name:'statistics',
+            component:() => import('../components/statistics.vue'),
             }
         ]
     }

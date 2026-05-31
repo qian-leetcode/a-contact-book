@@ -1,28 +1,23 @@
-import {defineStore} from 'pinia'
-import {ref} from "vue";
-import {user_login_, user_logout_} from '../api/login';
-import {ElMessage} from "element-plus";
+import { defineStore } from 'pinia'
+import { ref } from "vue";
+import { user_login_, user_logout_ } from '../api/login';
+import { ElMessage } from "element-plus";
 
-interface user_info {
-    id: number
-    name: string
-    username: string
-    isAdmin: boolean
-    token: string
-}
-
-export const useUserStore = defineStore('user', () => {
-    const userInfo = ref<user_info>()
+export const use_user_store = defineStore('user', () => {
+    const userInfo = ref()
     const is_logged_in = ref(false)
 
-    const login = async (username: string, password: string) => {
+    // 用户登录
+    async function login(username, password) {
         try {
             localStorage.removeItem('token')
             const params = {
-                user_name:username,
-                password:password
+                user_name: username,
+                password: password
             }
             const res = await user_login_(params)
+            console.log(res.data.data)
+            console.log(typeof res.data.data)
             if (res.data.code === 0) {
                 const data = JSON.parse(res.data.data)
                 userInfo.value = data
@@ -41,6 +36,7 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
+    // 退出登录
     const logout = async () => {
         try {
             await user_logout_()
@@ -59,6 +55,4 @@ export const useUserStore = defineStore('user', () => {
         login,
         logout
     }
-}, {
-    persist: true
 })

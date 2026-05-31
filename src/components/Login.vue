@@ -3,11 +3,11 @@
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import {user_register_} from "../api/login.js";
-import {useUserStore} from "../stores/user.js";
+import {use_user_store} from "../stores/user.js";
 import {ElMessage} from "element-plus";
 
 const router = useRouter()
-const userStore = useUserStore()
+const userStore = use_user_store()
 
 // 登录表单数据类型
 const login_information = ref({
@@ -21,6 +21,8 @@ const user_login = async () => {
         login_information.value.username,
         login_information.value.password
     )
+    console.log(login_information.value)
+    console.log(success)
     if (success) {
         await router.push('/home')
     }
