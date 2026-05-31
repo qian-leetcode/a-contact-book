@@ -55,7 +55,10 @@ const add_group = async () => {
         ElMessage.warning("请完善信息")
         return
     }
+
     await group_store.update_contact_group(group_info_form)
+    if(group_info_form.id === '0')ElMessage.success("新增成功")
+    else ElMessage.success("修改成功")
     await get_contact_group_by_name();
     show.value = false
 }

@@ -32,8 +32,8 @@ const get_dict_common_list = async () => {
 
 const show = ref(false);
 const dict_info = reactive({
-    id:'',
-    dic_type:'',
+    id:'0',
+    dic_type:query_form.type,
     content:'',
     idx:''
 })
@@ -54,11 +54,10 @@ const update_dict_common_list = async () => {
     const params = {
         id:Number(dict_info.id),
         // dic_type:"CallName",
-        dic_type: dict_info.dic_type,
+        dic_type: query_form.type,
         content:dict_info.content,
         idx:Number(dict_info.idx)
     }
-
     await DictCommon_store.update_add_dict(params)
     // console.log(params)
     show.value = false
@@ -88,7 +87,7 @@ const down_dict = async(id) => {
 
 watch(show , ()=>{
     if(show.value === false){
-        dict_info.id=''
+        dict_info.id='0'
         dict_info.dic_type=''
         dict_info.content=''
         dict_info.idx=''

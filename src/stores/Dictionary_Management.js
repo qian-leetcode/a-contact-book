@@ -54,7 +54,18 @@ const use_DictCommon_store = defineStore("DictCommon", ()=>{
         try {
             // console.log(params)
             const res = await update_add_dict_(params)
-            console.log(res)
+            if(res.data.code !== 0){
+                ElMessage.error(res.data.message)
+            }
+            else {
+                if(params.id === 0) {
+                    ElMessage.success("新增成功")
+                }
+                else {
+                    ElMessage.success("修改成功")
+                }
+            }
+            // console.log(res)
         }
         catch(err) {
             console.log(err.message);

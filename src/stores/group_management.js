@@ -51,12 +51,8 @@ export const use_group_management_store = defineStore('group', ()=> {
                 idx : Number(params.idx),
             }
             const res = await update_contact_group_(param)
-            console.log(res)
-            // const data = JSON.parse(res.data.data)
-            if(res.data.code === 0){
-                ElMessage.success("修改成功")
-            }
-            else{
+            if(res.data.code !== 0){
+                // ElMessage.success("修改成功")
                 ElMessage.error(res.data.message);
             }
         }
