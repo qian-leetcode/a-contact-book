@@ -20,7 +20,6 @@ const use_DictCommon_store = defineStore("DictCommon", ()=>{
     const get_DictCommon_list = async () => {
         try {
             const res = await get_Dict_type_list_()
-            // console.log(res)
             const data = JSON.parse(res.data.data)
             Dict_type_list.value = data
         }catch(err) {
@@ -33,11 +32,9 @@ const use_DictCommon_store = defineStore("DictCommon", ()=>{
     const get_dict_common_list = async (params) => {
         try {
             const res = await get_dict_common_list_(params)
-            console.log(res)
             if(res.data.data){
                 const data = JSON.parse(res.data.data)
                 Dict_common_list.value = data
-                // console.log(res)
             }
             else{
                 ElMessage("请刷新页面")
@@ -49,10 +46,9 @@ const use_DictCommon_store = defineStore("DictCommon", ()=>{
         }
     }
 
-    // 更新(新增)
+    // 更新/新增字典项
     const update_add_dict = async (params) => {
         try {
-            // console.log(params)
             const res = await update_add_dict_(params)
             if(res.data.code !== 0){
                 ElMessage.error(res.data.message)
@@ -65,7 +61,6 @@ const use_DictCommon_store = defineStore("DictCommon", ()=>{
                     ElMessage.success("修改成功")
                 }
             }
-            // console.log(res)
         }
         catch(err) {
             console.log(err.message);
@@ -73,7 +68,7 @@ const use_DictCommon_store = defineStore("DictCommon", ()=>{
         }
     }
 
-    // 删除
+    // 删除字典项
     const delete_dict = async (params) => {
         try {
             await delete_dict_(params)
@@ -85,7 +80,7 @@ const use_DictCommon_store = defineStore("DictCommon", ()=>{
         }
     }
 
-    // 上移
+    // 字典项上移
     const up_dict = async(id) => {
         try {
             const params = {
@@ -105,7 +100,7 @@ const use_DictCommon_store = defineStore("DictCommon", ()=>{
         }
     }
 
-    // 下移
+    // 字典项下移
     const down_dict = async(id) => {
         try {
             const params = {

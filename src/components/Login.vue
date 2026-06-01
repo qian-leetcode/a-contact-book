@@ -8,11 +8,13 @@ import {ElMessage} from "element-plus";
 const router = useRouter()
 const userStore = use_user_store()
 
+// 登录表单
 const login_information = ref({
     username: '',
     password: '',
 })
 
+// 用户登录
 const user_login = async () => {
     const success = await userStore.login(
         login_information.value.username,
@@ -23,8 +25,10 @@ const user_login = async () => {
     }
 }
 
+// 注册弹窗
 const register_visible = ref(false);
 
+// 注册表单
 const register_information = ref({
     username: '',
     password: '',
@@ -32,6 +36,7 @@ const register_information = ref({
     name: ''
 })
 
+// 用户注册
 const user_register = async () => {
     if (!register_information.value.username || !register_information.value.password || !register_information.value.name) {
         ElMessage.warning("请完善注册信息")

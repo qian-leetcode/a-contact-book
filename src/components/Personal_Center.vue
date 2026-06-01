@@ -1,6 +1,7 @@
 <script setup>
 import {use_user_store} from "../stores/user.js";
 
+// 用户信息store
 const user_store = use_user_store()
 </script>
 

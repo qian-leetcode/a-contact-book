@@ -11,6 +11,7 @@ const router = useRouter()
 const route = useRoute()
 const DictCommon_store = use_DictCommon_store()
 
+// 当前激活的tab
 const activeTab = computed({
     get: () => route.path,
     set: (val) => router.push(val)
@@ -19,15 +20,18 @@ const activeTab = computed({
 const group_store = use_group_management_store()
 const address_store = use_address_book_store()
 
+// 获取分组列表
 const get_group = async () => {
     await group_store.get_contact_group_by_name()
 }
 
+// 查询条件
 const query_contact = reactive({
     group_id: '-1',
     filter: ''
 })
 
+// 获取联系人列表
 const get_contact_list = async () => {
     const params = {
         group_id: Number(query_contact.group_id),
@@ -36,8 +40,10 @@ const get_contact_list = async () => {
     await address_store.get_group_contact_list(params)
 }
 
+// 新增联系人弹窗
 const show_add = ref(false)
 
+// 新增联系人表单
 const contact_info = reactive({
     id: '',
     name: '',
@@ -49,6 +55,7 @@ const contact_info = reactive({
 
 const avatarFile = ref(null)
 
+// 重置新增表单
 const resetForm = () => {
     if (contact_info.img1 && contact_info.img1.startsWith('blob:')) {
         URL.revokeObjectURL(contact_info.img1)
@@ -62,6 +69,7 @@ const resetForm = () => {
     avatarFile.value = null
 }
 
+// 头像文件变更处理
 const handleAvatarChange = (uploadFile) => {
     const file = uploadFile.raw
     const isImage = /^image\/(jpeg|png|jpg)$/.test(file.type)
@@ -81,6 +89,7 @@ const handleAvatarChange = (uploadFile) => {
     contact_info.img1 = URL.createObjectURL(file)
 }
 
+// 保存联系人（新增/更新）
 const save_contact = async () => {
     if (!contact_info.name) {
         ElMessage.warning('请输入姓名')

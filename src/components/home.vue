@@ -7,13 +7,16 @@ import {ElMessage} from "element-plus";
 const user_store = use_user_store()
 const router = useRouter()
 
+// 是否为管理员
 const is_admin = computed(() => user_store.userInfo?.is_admin)
 
+// 退出登录
 const handleLogout = async () => {
     await user_store.logout()
     await router.push('/')
 }
 
+// 修改密码弹窗
 const show_update_password = ref(false)
 const change_password_form = reactive({
     password: '',
@@ -21,6 +24,7 @@ const change_password_form = reactive({
     re_new_password: '',
 })
 
+// 提交修改密码
 const update_password = async () => {
     if(change_password_form.new_password !== change_password_form.re_new_password){
         ElMessage.warning("两次输入的新密码不一致")
@@ -34,6 +38,7 @@ const update_password = async () => {
     show_update_password.value = false
 }
 
+// 关闭弹窗时重置表单
 watch(show_update_password, (value) => {
     if (show_update_password.value === false) {
         change_password_form.password = ''

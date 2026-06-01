@@ -1,11 +1,11 @@
 import request from './request.js'
 
-// 获取用户列表
+// 根据名称获取用户列表
 export const get_account_by_name_ = (params) => {
     return request.get('/Account/List',{params:params})
 }
 
-// 新增用户
+// 新增/更新用户（id=0新增，>0更新）
 export const add_account_ = (params) => {
     return request.post('/Account/Update',params)
 }

@@ -4,10 +4,12 @@ import use_DictCommon_store from "../stores/Dictionary_Management.js";
 
 const DictCommon_store = use_DictCommon_store()
 
+// 查询条件
 const query_form = reactive({
     type: '',
 })
 
+// 获取字典类型列表并加载第一个类型的字典项
 const get_Dict_type_list = async () => {
     await DictCommon_store.get_DictCommon_list()
     query_form.type = DictCommon_store.Dict_type_list[0]?.value
@@ -16,12 +18,14 @@ const get_Dict_type_list = async () => {
 
 const dict_common_list = ref([])
 
+// 获取字典项列表
 const get_dict_common_list = async () => {
     const params = { type: query_form.type }
     await DictCommon_store.get_dict_common_list(params)
     dict_common_list.value = DictCommon_store.Dict_common_list
 }
 
+// 编辑弹窗
 const show = ref(false)
 const dict_info = reactive({
     id: '0',
@@ -30,6 +34,7 @@ const dict_info = reactive({
     idx: ''
 })
 
+// 打开编辑
 const open_update = async (row) => {
     show.value = true
     dict_info.id = row.id
@@ -38,6 +43,7 @@ const open_update = async (row) => {
     dict_info.idx = row.idx
 }
 
+// 保存字典项
 const update_dict_common_list = async () => {
     if (!dict_info.content) {
         ElMessage.warning('请输入字典项目内容')
@@ -54,21 +60,25 @@ const update_dict_common_list = async () => {
     await get_dict_common_list()
 }
 
+// 删除字典项
 const delete_dict_common_list = async (id) => {
     await DictCommon_store.delete_dict({ id })
     await get_dict_common_list()
 }
 
+// 上移
 const up_dict = async (id) => {
     await DictCommon_store.up_dict(id)
     await get_dict_common_list()
 }
 
+// 下移
 const down_dict = async (id) => {
     await DictCommon_store.down_dict(id)
     await get_dict_common_list()
 }
 
+// 关闭弹窗重置表单
 watch(show, () => {
     if (show.value === false) {
         dict_info.id = '0'

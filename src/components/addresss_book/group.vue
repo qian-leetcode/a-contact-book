@@ -19,6 +19,7 @@ const query_contact = reactive({
 const group_list = ref([])
 const contact_group_list = ref([])
 
+// 删除联系人
 const handle_delete = async (user) => {
     const res = await address_store.delete_contact(user.id)
     if (res) {
@@ -26,11 +27,13 @@ const handle_delete = async (user) => {
     }
 }
 
+// 获取分组列表
 const get_group_list = async () => {
     await group_store.get_contact_group_by_name()
     group_list.value = group_store.group_list
 }
 
+// 获取联系人列表
 const get_contact_list = async () => {
     const params = {
         group_id: Number(query_contact.group_id),
@@ -39,6 +42,7 @@ const get_contact_list = async () => {
     await address_store.get_group_contact_list(params)
 }
 
+// 编辑弹窗
 const show_edit = ref(false)
 const edit_info = reactive({
     id: '',
@@ -51,6 +55,7 @@ const edit_info = reactive({
 const edit_avatar_file = ref(null)
 const edit_old_avatar_id = ref('')
 
+// 关闭编辑
 const close_edit = () => {
     if (edit_info.img1 && edit_info.img1.startsWith('blob:')) {
         URL.revokeObjectURL(edit_info.img1)
@@ -58,6 +63,7 @@ const close_edit = () => {
     show_edit.value = false
 }
 
+// 打开编辑
 const open_edit = (user) => {
     const matched = DictCommon_store.Dict_common_list.find(
         item => item.content === user.call_name
@@ -73,6 +79,7 @@ const open_edit = (user) => {
     show_edit.value = true
 }
 
+// 编辑时头像变更
 const handleEditAvatarChange = (uploadFile) => {
     const file = uploadFile.raw
     const isImage = /^image\/(jpeg|png|jpg)$/.test(file.type)
@@ -92,6 +99,7 @@ const handleEditAvatarChange = (uploadFile) => {
     edit_info.img1 = URL.createObjectURL(file)
 }
 
+// 保存编辑
 const save_edit = async () => {
     if (!edit_info.name) {
         ElMessage.warning('请输入姓名')

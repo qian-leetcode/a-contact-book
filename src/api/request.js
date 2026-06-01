@@ -7,15 +7,16 @@ const request = axios.create({
     timeout: 10000
 })
 
+// 请求拦截器：自动携带token
 request.interceptors.request.use(config => {
     const token = localStorage.getItem('token')
-    // console.log('请求URL:', config.url, 'token:', token)
     if (token) {
         config.headers.token = token
     }
     return config
 })
 
+// 响应拦截器：401时跳转登录页
 request.interceptors.response.use(
     response => response,
     error => {

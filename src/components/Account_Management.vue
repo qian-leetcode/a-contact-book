@@ -4,17 +4,21 @@ import {user_account_store} from "../stores/Account_Management.js";
 
 const account_store = user_account_store()
 
+// 查询条件
 const query_form = reactive({
     filter: ''
 })
 
+// 获取账户列表
 const get_account_list = async () => {
     const params = { filter: query_form.filter }
     await account_store.get_account_by_name(params)
 }
 
+// 新增/编辑弹窗
 const show = ref(false)
 
+// 账户表单数据
 const account_info = reactive({
     id: '0',
     name: '',
@@ -24,6 +28,7 @@ const account_info = reactive({
     available: true
 })
 
+// 保存账户
 const add_account = async () => {
     if (!account_info.name || !account_info.user_name || !account_info.Password) {
         ElMessage.warning('请完善信息（姓名、用户名、密码为必填）')
@@ -42,6 +47,7 @@ const add_account = async () => {
     await get_account_list()
 }
 
+// 打开编辑弹窗
 const open_update = async (row) => {
     account_info.id = row.id
     account_info.name = row.name
@@ -52,6 +58,7 @@ const open_update = async (row) => {
     show.value = true
 }
 
+// 关闭弹窗重置表单
 watch(show, () => {
     if (show.value === false) {
         account_info.id = '0'
@@ -63,6 +70,7 @@ watch(show, () => {
     }
 })
 
+// 显示密码弹窗
 const show_password = ref(false)
 const user_password = ref('')
 
@@ -71,6 +79,7 @@ const fun_show_password = (row) => {
     show_password.value = true
 }
 
+// 禁用/启用确认弹窗
 const show_hide = ref(false)
 
 const hide_account = async (row) => {
@@ -83,6 +92,7 @@ const hide_account = async (row) => {
     show_hide.value = true
 }
 
+// 确认禁用/启用
 const put_hide_account = async () => {
     const params = {
         id: Number(account_info.id),
@@ -97,6 +107,7 @@ const put_hide_account = async () => {
     show_hide.value = false
 }
 
+// 删除账户
 const delete_account = async (id) => {
     await account_store.delete_account({ id: Number(id) })
     await get_account_list()

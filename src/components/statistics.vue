@@ -5,12 +5,15 @@ import { use_address_book_store } from "../stores/address_book.js";
 
 const address_store = use_address_book_store()
 
+// ECharts实例
 let groupChart = null
 let callChart = null
 
+// 图表DOM引用
 const groupRef = ref(null)
 const callRef = ref(null)
 
+// 获取统计数据
 const get_data = async () => {
     const params = {
         group_id: '-1',
@@ -20,6 +23,7 @@ const get_data = async () => {
     await address_store.get_contact_group_statices_list(params)
 }
 
+// 渲染饼图
 function renderCharts() {
     const groupStatistics = address_store.contact_group_statices_list || []
     const callStatistics = address_store.contact_dict_statices_list || []
@@ -57,6 +61,7 @@ function renderCharts() {
         textStyle: { fontSize: 12 }
     }
 
+    // 分组统计饼图
     groupChart.setOption({
         title: { text: '分组统计', left: 'center' },
         tooltip: { trigger: 'item', formatter: (p) => `${p.name}<br/>数量：${p.value}` },
@@ -73,6 +78,7 @@ function renderCharts() {
         }]
     })
 
+    // 称呼统计饼图
     callChart.setOption({
         title: { text: '称呼统计', left: 'center' },
         tooltip: { trigger: 'item', formatter: (p) => `${p.name}<br/>数量：${p.value}` },

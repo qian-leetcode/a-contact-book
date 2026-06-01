@@ -1,7 +1,6 @@
 import request from './request.js'
 
-
-// 与系统是否是正确的连接
+// 检测系统连接是否正常
 export const user_user_connect_  = () => {
     return request.get('/Connect');
 }
@@ -11,15 +10,12 @@ export const user_login_ = (params) => {
     return request.post('/UserLogin' , {},{params:params});
 }
 
-
-
 // 用户注册
 export const user_register_ = (params) => {
     return request.post('/Register' ,params);
 }
 
-
-// 检测当前的登录信息是否有效
+// 检测当前登录信息是否有效
 export const user_check_login_ = () => {
     return request.get('/CheckLogin');
 }
@@ -29,7 +25,7 @@ export const change_user_password_ = (params) => {
     return request.post('/ChangePassword',{},{params:params});
 }
 
-// 用户退出
+// 用户退出登录
 export const user_logout_ = () => {
     return request.post('/Logout')
 }

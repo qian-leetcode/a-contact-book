@@ -10,22 +10,22 @@ export const get_dict_common_list_ = (params) => {
     return request.get('/Dict/Common/List',{params:params})
 }
 
-//更新（新增）
+// 新增/更新字典项
 export const update_add_dict_ = async(params) =>{
     return request.post('/Dict/Common/Update' ,params)
 }
 
-// 删除
+// 删除字典项
 export const delete_dict_ = async(params) =>{
     return request.post('/Dict/Common/Delete',{},{params:params})
 }
 
-// 上移
+// 字典项上移
 export const up_dict_ = async(params) =>{
     return request.post('/Dict/Common/IndexUp',{},{params:params})
 }
 
-// 下移
+// 字典项下移
 export const down_dict_ = async(params) =>{
     return request.post('/Dict/Common/IndexDown',{},{params:params})
 }

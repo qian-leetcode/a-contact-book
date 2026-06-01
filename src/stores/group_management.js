@@ -13,11 +13,10 @@ export const use_group_management_store = defineStore('group', ()=> {
     // 分组数据
     const group_list = ref([])
 
-    // 根据Id 获取列表信息
+    // 根据Id获取分组信息
     const get_contact_group_by_id = async (id) => {
         try {
             const params = {id:id}
-            // console.log(params)
             const res = await get_contact_group_by_id_(params)
         }
         catch(e) {
@@ -26,14 +25,12 @@ export const use_group_management_store = defineStore('group', ()=> {
         }
     }
 
-    // 获取列表名称
+    // 根据名称获取分组列表
     const get_contact_group_by_name =async (name) => {
         try {
             const params = {filter:name}
-            // console.log(params)
             const res = await get_contact_group_by_name_(params);
             const data = JSON.parse(res.data.data)
-            // console.log(data)
             group_list.value=data
         }
         catch(e) {
@@ -42,7 +39,7 @@ export const use_group_management_store = defineStore('group', ()=> {
         }
     }
 
-    // 更新
+    // 更新/新增分组
     const update_contact_group = async (params) => {
         try {
             const param = {
@@ -52,7 +49,6 @@ export const use_group_management_store = defineStore('group', ()=> {
             }
             const res = await update_contact_group_(param)
             if(res.data.code !== 0){
-                // ElMessage.success("修改成功")
                 ElMessage.error(res.data.message);
             }
         }
@@ -62,12 +58,11 @@ export const use_group_management_store = defineStore('group', ()=> {
         }
     }
 
-    // 删除
+    // 删除分组
     const delete_contact_group = async (id) => {
         try {
             const params = {id:id}
             const res = await delete_contact_group_(params)
-            // const data = JSON.parse(res.data.data)
             if(res.data.code === 0){
                 ElMessage.success("删除成功")
             }
@@ -81,15 +76,11 @@ export const use_group_management_store = defineStore('group', ()=> {
         }
     }
 
-    //  上移
+    // 分组上移
     const index_up = async (id) => {
         try {
             const params = {id}
             const res = await index_up_contact_group_(params)
-            // console.log(res)
-            // const data = JSON.parse(res.data.data)
-            // console.log(res.data)
-
             if(res.data.code !== 0){
                 ElMessage.error(res.data.message)
             }
@@ -103,13 +94,11 @@ export const use_group_management_store = defineStore('group', ()=> {
         }
     }
 
-    // 下移
+    // 分组下移
     const index_down = async (id) => {
         try {
             const params = {id}
             const res = await index_down_contact_group_(params)
-            // const data = JSON.parse(res.data.data)
-            // console.log(res.data)
             if(res.data.code !== 0){
                 ElMessage.error(res.data.message)
             }

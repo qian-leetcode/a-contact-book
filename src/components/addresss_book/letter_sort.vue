@@ -11,6 +11,7 @@ const address_store = use_address_book_store()
 const group_store = use_group_management_store()
 const DictCommon_store = use_DictCommon_store()
 
+// 按字母排序获取联系人
 const get_contact_list = async () => {
     const params = {
         group_id: -1,
@@ -19,6 +20,7 @@ const get_contact_list = async () => {
     await address_store.contact_sort_by_letter(params)
 }
 
+// 编辑弹窗
 const show_edit = ref(false)
 const edit_info = reactive({
     id: '',
@@ -31,6 +33,7 @@ const edit_info = reactive({
 const edit_avatar_file = ref(null)
 const edit_old_avatar_id = ref('')
 
+// 打开编辑
 const open_edit = (user) => {
     const matched = DictCommon_store.Dict_common_list.find(
         item => item.content === user.call_name
@@ -46,6 +49,7 @@ const open_edit = (user) => {
     show_edit.value = true
 }
 
+// 编辑时头像变更
 const handleEditAvatarChange = (uploadFile) => {
     const file = uploadFile.raw
     const isImage = /^image\/(jpeg|png|jpg)$/.test(file.type)
@@ -65,6 +69,7 @@ const handleEditAvatarChange = (uploadFile) => {
     edit_info.img1 = URL.createObjectURL(file)
 }
 
+// 关闭编辑
 const close_edit = () => {
     if (edit_info.img1 && edit_info.img1.startsWith('blob:')) {
         URL.revokeObjectURL(edit_info.img1)
@@ -72,6 +77,7 @@ const close_edit = () => {
     show_edit.value = false
 }
 
+// 保存编辑
 const save_edit = async () => {
     if (!edit_info.name) {
         ElMessage.warning('请输入姓名')
@@ -111,6 +117,7 @@ const save_edit = async () => {
     }
 }
 
+// 删除联系人
 const handle_delete = async (user) => {
     const res = await address_store.delete_contact(user.id)
     if (res) {
@@ -118,6 +125,7 @@ const handle_delete = async (user) => {
     }
 }
 
+// 获取分组列表
 const get_group_list = async () => {
     await group_store.get_contact_group_by_name()
 }

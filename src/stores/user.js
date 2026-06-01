@@ -5,8 +5,11 @@ import { ElMessage } from "element-plus";
 import {get_user_password_, update_user_password_} from "../api/user.js";
 
 export const use_user_store = defineStore('user', () => {
+    // 当前用户信息
     const userInfo = ref()
+    // 是否已登录
     const is_logged_in = ref(false)
+    // 用户密码
     const user_password = ref('')
 
     // 用户登录
@@ -18,8 +21,6 @@ export const use_user_store = defineStore('user', () => {
                 password: password
             }
             const res = await user_login_(params)
-            console.log(res.data.data)
-            console.log(typeof res.data.data)
             if (res.data.code === 0) {
                 const data = JSON.parse(res.data.data)
                 userInfo.value = data
@@ -61,7 +62,6 @@ export const use_user_store = defineStore('user', () => {
             if(res.data.code === 0) {
                 const data = JSON.parse(res.data.data)
                 user_password.value = data
-                // console.log(user_password.value)
             }
             else {
                 ElMessage.error(res.data.message)
@@ -78,7 +78,6 @@ export const use_user_store = defineStore('user', () => {
     const update_password = async (params) => {
         try {
             const res = await update_user_password_(params)
-            // console.log(res)
             if(res.data.code === 0) {
                 ElMessage.success("修改成功")
             }

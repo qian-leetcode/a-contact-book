@@ -5,35 +5,42 @@ import {ElMessage} from "element-plus";
 
 const group_store = use_group_management_store()
 
+// 查询条件
 const query_form = reactive({
     name: ''
 })
 
 const group_list = ref([])
 
+// 查询分组列表
 const get_contact_group_by_name = async () => {
     await group_store.get_contact_group_by_name(query_form.name)
     group_list.value = group_store.group_list
 }
 
+// 分组上移
 const up_idx = async (id) => {
     await group_store.index_up(Number(id));
     await get_contact_group_by_name();
 }
 
+// 分组下移
 const down_idx = async (id) => {
     await group_store.index_down(Number(id));
     await get_contact_group_by_name();
 }
 
+// 新增/编辑弹窗
 const show = ref(false)
 
+// 分组表单数据
 const group_info_form = reactive({
     id: '0',
     name: '',
     idx: null
 })
 
+// 保存分组（新增/修改）
 const add_group = async () => {
     if (group_info_form.name === '' || group_info_form.idx === null || group_info_form.idx === undefined) {
         ElMessage.warning("请完善信息")
@@ -45,6 +52,7 @@ const add_group = async () => {
     show.value = false
 }
 
+// 打开编辑弹窗
 const open_update = async (row) => {
     show.value = true
     group_info_form.id = row.id
@@ -52,8 +60,10 @@ const open_update = async (row) => {
     group_info_form.idx = Number(row.idx)
 }
 
+// 删除确认弹窗
 const show_delete = ref(false)
 
+// 打开删除确认
 const open_delete = async (row) => {
     group_info_form.id = row.id;
     group_info_form.name = row.name
@@ -61,12 +71,14 @@ const open_delete = async (row) => {
     show_delete.value = true
 }
 
+// 确认删除分组
 const delete_group = async () => {
     await group_store.delete_contact_group(Number(group_info_form.id))
     await get_contact_group_by_name();
     show_delete.value = false
 }
 
+// 关闭删除弹窗时重置
 watch(show_delete, () => {
     if (show_delete.value === false) {
         group_info_form.id = '0'
@@ -75,6 +87,7 @@ watch(show_delete, () => {
     }
 })
 
+// 关闭编辑弹窗时重置
 watch(show, () => {
     if (show.value === false) {
         group_info_form.id = '0'
