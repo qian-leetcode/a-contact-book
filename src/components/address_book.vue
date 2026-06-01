@@ -3,9 +3,10 @@ import {computed, onMounted, reactive, ref} from "vue";
 import {use_group_management_store} from "../stores/group_management.js";
 import {use_address_book_store} from "../stores/address_book.js";
 
-import { useRouter, useRoute } from 'vue-router'
+import {useRouter, useRoute} from 'vue-router'
 import use_DictCommon_store from "../stores/Dictionary_Management.js";
 import {ElMessage} from "element-plus";
+import {upload_file_common_} from "../api/upload.js";
 
 const router = useRouter()
 const route = useRoute()
@@ -43,17 +44,26 @@ const get_contact_list = async () => {
 const show_add = ref(false)
 
 const contact_info = reactive({
-    id:'',
-    name:'',
-    group_id:'-1',
-    phone:'',
-    img1:'',
-    dict:''
+    id: '',
+    name: '',
+    group_id: '-1',
+    phone: '',
+    img1: '',
+    dict: ''
 })
 
+const avatarFile = ref(null)
 
+const resetForm = () => {
+    contact_info.id = ''
+    contact_info.name = ''
+    contact_info.group_id = '-1'
+    contact_info.phone = ''
+    contact_info.img1 = ''
+    contact_info.dict = ''
+    avatarFile.value = null
+}
 
-// 头像上传前校验
 const beforeAvatarUpload = (file) => {
     const isImage = /^image\/(jpeg|png|jpg)$/.test(file.type)
     if (!isImage) {
@@ -68,21 +78,55 @@ const beforeAvatarUpload = (file) => {
     return true
 }
 
-// 上传成功回调（这里直接用本地预览，如需上传到后端可修改）
-const handleAvatarSuccess = (response, file) => {
-    // 本地预览
+const handleAvatarChange = (file) => {
+    avatarFile.value = file.raw
     contact_info.img1 = URL.createObjectURL(file.raw)
-
-    ElMessage.success('头像预览已更新')
 }
 
 const handleAvatarError = () => {
     ElMessage.error('头像上传失败，请重试')
 }
 
-onMounted(()=>{
+const save_contact = async () => {
+    if (!contact_info.name) {
+        ElMessage.warning('请输入姓名')
+        return
+    }
+    let avatar_id = ''
+    if (avatarFile.value) {
+        const name = `avatar_${Date.now()}`
+        const res = await upload_file_common_('avatar', name, avatarFile.value)
+        if (res.data.code === 0) {
+            const data = JSON.parse(res.data.data)
+            avatar_id = data.file_info.id
+        } else {
+            ElMessage.error(res.data.message)
+            return
+        }
+    }
+    const call_name = DictCommon_store.Dict_common_list.find(
+        item => item.id === contact_info.dict
+    )?.content || ''
+    const params = {
+        id: Number(contact_info.id) || 0,
+        name: contact_info.name,
+        group_id: Number(contact_info.group_id),
+        mobile: contact_info.phone,
+        avatar: avatar_id,
+        call_name
+    }
+    const result = await address_store.update_contact(params)
+    if (result) {
+        show_add.value = false
+        resetForm()
+        await get_contact_list()
+    }
+}
+
+onMounted(() => {
     get_contact_list()
     get_group()
+    DictCommon_store.get_dict_common_list({ type: 'CallName' })
 })
 
 
@@ -119,7 +163,8 @@ onMounted(()=>{
                 <el-button type="primary" @click="show_add = true"> 新增 </el-button>
                 <el-dialog
                     v-model="show_add"
-                    @close="show_add = false"
+                    @close="resetForm"
+                    title="新增联系人"
                 >
                     <el-form label-width="100px">
                         <el-form-item label="姓名">
@@ -148,7 +193,7 @@ onMounted(()=>{
                                 action="#"
                                 :show-file-list="false"
                                 :before-upload="beforeAvatarUpload"
-                                :on-success="handleAvatarSuccess"
+                                :on-change="handleAvatarChange"
                                 :on-error="handleAvatarError"
                                 :auto-upload="false"
                                 accept="image/png, image/jpeg, image/jpg"
@@ -173,10 +218,13 @@ onMounted(()=>{
                                     :label="item.content"
                                     :value="item.id"
                                 ></el-option>
-
                             </el-select>
                         </el-form-item>
                     </el-form>
+                    <template #footer>
+                        <el-button @click="show_add = false">取消</el-button>
+                        <el-button type="primary" @click="save_contact">保存</el-button>
+                    </template>
                 </el-dialog>
                 <el-button icon="Refresh" @click="get_contact_list"> 刷新列表 </el-button>
         </el-space>

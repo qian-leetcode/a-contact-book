@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
 import {ElMessage} from "element-plus";
-import {get_contact_info_by_, get_contact_info_by_id_} from "../api/address_book.js";
+import {get_contact_info_by_, get_contact_info_by_id_, update_contact_} from "../api/address_book.js";
 import {use_group_management_store} from "./group_management.js";
 
 export const use_address_book_store = defineStore("address_book",() =>{
@@ -152,6 +152,24 @@ export const use_address_book_store = defineStore("address_book",() =>{
         }
     }
 
+    // 新增/更新联系人
+    const update_contact = async (data) => {
+        try {
+            const res = await update_contact_(data)
+            if (res.data.code === 0) {
+                ElMessage.success("保存成功")
+                return JSON.parse(res.data.data)
+            } else {
+                ElMessage.error(res.data.message)
+                return null
+            }
+        } catch (err) {
+            console.log(err.message);
+            ElMessage.error("出现异常，请联系工作人员")
+            return null
+        }
+    }
+
     return {
         get_contact_list,
         contact_list,
@@ -162,5 +180,6 @@ export const use_address_book_store = defineStore("address_book",() =>{
         contact_group_statices_list,
         contact_sort_by_letter,
         contact_letter_list,
+        update_contact,
     }
 })

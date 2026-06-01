@@ -54,7 +54,8 @@ onMounted(() => {
 
             >
                 <div class="user-avatar">
-                    {{ user.name?.[0] || '?' }}
+                    <img v-if="user.avatar_url" :src="user.avatar_url" class="avatar-img" />
+                    <span v-else>{{ user.name?.[0] || '?' }}</span>
                 </div>
                 <div class="user-info">
                     <div class="user-name">{{ user.name }} ({{ user.call_name }})</div>
@@ -128,6 +129,12 @@ onMounted(() => {
     flex-shrink: 0;
     margin-right: 12px;
     text-transform: uppercase;
+    overflow: hidden;
+}
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 .user-info {
     flex: 1;
