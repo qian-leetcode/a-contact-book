@@ -89,10 +89,8 @@ export const use_address_book_store = defineStore("address_book",() =>{
             const res = await get_contact_info_by_(params)
             if(res.data.code === 0){
                 const data = JSON.parse(res.data.data)
-                contact_list.value = data
-                // console.log(data)
                 const map = {}
-                contact_list.value.forEach(item =>{
+                data.forEach(item =>{
                     const group_key = item.call_name
                     if(!map[group_key]){
                         map[group_key] = {

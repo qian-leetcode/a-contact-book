@@ -27,6 +27,6 @@ export const index_up_contact_group_ = (params) => {
 
 // 分组序号下移
 export const index_down_contact_group_ = (params) => {
-    return request.post('ContactGroup/IndexDown',{} ,{params:params})
+    return request.post('/ContactGroup/IndexDown',{} ,{params:params})
 }
 
