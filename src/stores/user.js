@@ -55,4 +55,6 @@ export const use_user_store = defineStore('user', () => {
         login,
         logout
     }
+}, {
+    persist: true
 })

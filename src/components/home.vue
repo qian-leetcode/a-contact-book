@@ -1,5 +1,7 @@
 <script setup>
+import {use_user_store} from "../stores/user.js";
 
+const user_store = use_user_store()
 </script>
 
 <template>
@@ -19,8 +21,8 @@
             <el-menu-item index="/Dictionary_Management">字典管理</el-menu-item>
             <el-menu-item index="/Account_Management">账户管理</el-menu-item>
             <el-menu-item index="/statistics">统计</el-menu-item>
-            <el-dropdown>
-            <span>1</span>
+            <el-dropdown style="height: 100%; display: inline-flex; align-items: center; margin-left: 20px">
+            <span>{{ user_store.userInfo?.opt_name }}（{{ user_store.userInfo?.user_name }}）</span>
             <template #dropdown>
 
                 <el-dropdown-item>修改密码</el-dropdown-item>
@@ -35,5 +37,7 @@
 </template>
 
 <style scoped>
-
+.el-header {
+    align-items: center;
+}
 </style>

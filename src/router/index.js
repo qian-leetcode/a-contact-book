@@ -20,7 +20,7 @@ const routes = [
                         name:'group',
                         component: () => import('../components/addresss_book/group.vue'),
                     },{
-                        path:'letter_sort',
+                        path:'/letter_sort',
                         name:'letter_sort',
                         component: () => import('../components/addresss_book/letter_sort.vue'),
                     }
@@ -32,7 +32,7 @@ const routes = [
             },{
                 path:'/Personal_Center',
                 name:'personal_center',
-                component: () => import('../components/personal_center.vue'),
+                component: () => import('../components/Personal_Center.vue'),
             },{
                 path:'/Dictionary_Management',
                 name:'dictionary_management',

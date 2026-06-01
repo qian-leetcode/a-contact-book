@@ -33,7 +33,7 @@ const use_DictCommon_store = defineStore("DictCommon", ()=>{
     const get_dict_common_list = async (params) => {
         try {
             const res = await get_dict_common_list_(params)
-            // console.log(res)
+            console.log(res)
             if(res.data.data){
                 const data = JSON.parse(res.data.data)
                 Dict_common_list.value = data

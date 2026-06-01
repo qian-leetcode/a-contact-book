@@ -24,7 +24,7 @@ const user_login = async () => {
     console.log(login_information.value)
     console.log(success)
     if (success) {
-        await router.push('/home')
+        await router.push('/group')
     }
 }
 
