@@ -1,7 +1,14 @@
 <script setup>
 import {use_user_store} from "../stores/user.js";
+import {useRouter} from "vue-router";
 
 const user_store = use_user_store()
+const router = useRouter()
+
+const handleLogout = async () => {
+    await user_store.logout()
+    router.push('/')
+}
 </script>
 
 <template>
@@ -26,7 +33,7 @@ const user_store = use_user_store()
             <template #dropdown>
 
                 <el-dropdown-item>修改密码</el-dropdown-item>
-                <el-dropdown-item @click="user_store.logout">退出登录</el-dropdown-item>
+                <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
             </template>
         </el-dropdown>
         </el-menu>
