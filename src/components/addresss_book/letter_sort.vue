@@ -5,6 +5,7 @@ import {use_group_management_store} from "../../stores/group_management.js";
 import use_DictCommon_store from "../../stores/Dictionary_Management.js";
 import {ElMessage} from "element-plus";
 import {upload_file_common_} from "../../api/upload.js";
+import {full_url} from "../../api/util.js";
 
 const address_store = use_address_book_store()
 const group_store = use_group_management_store()
@@ -135,7 +136,7 @@ onMounted(() => {
                 class="user-item"
             >
                 <div class="user-avatar">
-                    <img v-if="user.avatar_url" :src="user.avatar_url" class="avatar-img" />
+                    <img v-if="user.avatar_url" :src="full_url(user.avatar_url)" class="avatar-img" />
                     <span v-else>{{ user.name?.[0] || '?' }}</span>
                 </div>
                 <div class="user-info">
@@ -181,7 +182,7 @@ onMounted(() => {
                     :auto-upload="false"
                     accept="image/png, image/jpeg, image/jpg"
                 >
-                    <img v-if="edit_info.img1" :src="edit_info.img1" class="avatar" />
+                    <img v-if="edit_info.img1" :src="full_url(edit_info.img1)" class="avatar" />
                     <div v-else class="avatar-uploader-icon">
                         <el-icon><Plus /></el-icon>
                     </div>
