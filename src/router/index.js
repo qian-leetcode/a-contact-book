@@ -14,6 +14,7 @@ const routes = [
                 path:'/address_book',
                 name:'address_book',
                 component: () => import('../components/address_book.vue'),
+                redirect: '/group',
                 children:[
                     {
                         path:'/group',
