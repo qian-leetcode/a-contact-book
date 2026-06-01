@@ -20,7 +20,7 @@ const account_info = reactive({
     name: '',
     user_name: '',
     Password: '',
-    is_main: false,
+    is_admin: false,
     available: true
 })
 
@@ -34,7 +34,7 @@ const add_account = async () => {
         name: account_info.name,
         user_name: account_info.user_name,
         Password: account_info.Password,
-        is_main: account_info.is_main,
+        is_admin: account_info.is_admin,
         available: account_info.available,
     }
     await account_store.add_account(params)
@@ -47,7 +47,7 @@ const open_update = async (row) => {
     account_info.name = row.name
     account_info.user_name = row.user_name
     account_info.Password = row.Password
-    account_info.is_main = row.is_main
+    account_info.is_admin = row.is_admin
     account_info.available = row.available
     show.value = true
 }
@@ -58,7 +58,7 @@ watch(show, () => {
         account_info.name = ''
         account_info.user_name = ''
         account_info.Password = ''
-        account_info.is_main = false
+        account_info.is_admin = false
         account_info.available = true
     }
 })
@@ -78,7 +78,7 @@ const hide_account = async (row) => {
     account_info.name = row.name
     account_info.user_name = row.user_name
     account_info.Password = row.Password
-    account_info.is_main = row.is_main
+    account_info.is_admin = row.is_admin
     account_info.available = row.available !== true
     show_hide.value = true
 }
@@ -89,7 +89,7 @@ const put_hide_account = async () => {
         name: account_info.name,
         user_name: account_info.user_name,
         Password: account_info.Password,
-        is_main: account_info.is_main,
+        is_admin: account_info.is_admin,
         available: account_info.available,
     }
     await account_store.add_account(params)
@@ -159,7 +159,7 @@ onMounted(() => {
             </el-form-item>
             <el-form-item>
                 <el-checkbox v-model="account_info.available">账户可用</el-checkbox>
-                <el-checkbox v-model="account_info.is_main" style="margin-left: 16px;">管理员账户</el-checkbox>
+                <el-checkbox v-model="account_info.is_admin" style="margin-left: 16px;">管理员账户</el-checkbox>
             </el-form-item>
         </el-form>
         <template #footer>
