@@ -1,11 +1,13 @@
 <script setup>
 import {use_user_store} from "../stores/user.js";
 import {useRouter} from "vue-router";
-import {reactive, ref, watch} from "vue";
+import {computed, reactive, ref, watch} from "vue";
 import {ElMessage} from "element-plus";
 
 const user_store = use_user_store()
 const router = useRouter()
+
+const is_admin = computed(() => user_store.userInfo?.is_admin)
 
 const handleLogout = async () => {
     await user_store.logout()
@@ -61,8 +63,8 @@ watch(show_update_password, (value) => {
             <el-menu-item index="/address_book">通讯录</el-menu-item>
             <el-menu-item index="/group_management">分组管理</el-menu-item>
             <el-menu-item index="/Personal_Center">个人中心</el-menu-item>
-            <el-menu-item index="/Dictionary_Management">字典管理</el-menu-item>
-            <el-menu-item index="/Account_Management">账户管理</el-menu-item>
+            <el-menu-item v-if="is_admin" index="/Dictionary_Management">字典管理</el-menu-item>
+            <el-menu-item v-if="is_admin" index="/Account_Management">账户管理</el-menu-item>
             <el-menu-item index="/statistics">统计</el-menu-item>
             <el-dropdown style="height: 100%; display: inline-flex; align-items: center; margin-left: 20px">
             <span>{{ user_store.userInfo?.opt_name }}（{{ user_store.userInfo?.user_name }}）</span>
