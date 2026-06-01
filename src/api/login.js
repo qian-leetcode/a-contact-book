@@ -15,7 +15,7 @@ export const user_login_ = (params) => {
 
 // 用户注册
 export const user_register_ = (params) => {
-    return request.post('/Register' ,{},{params:params});
+    return request.post('/Register' ,params);
 }
 
 

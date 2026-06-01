@@ -48,6 +48,7 @@ const user_register = async () => {
             name:register_information.value.name
         }
         const res = await user_register_(params)
+        console.log(res)
         if(res.data.code === 0) {
             ElMessage.success("注册成功")
         }
