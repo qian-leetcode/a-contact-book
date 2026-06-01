@@ -39,6 +39,10 @@ const open_update = async (row) => {
 }
 
 const update_dict_common_list = async () => {
+    if (!dict_info.content) {
+        ElMessage.warning('请输入字典项目内容')
+        return
+    }
     const params = {
         id: Number(dict_info.id),
         dic_type: query_form.type,

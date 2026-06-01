@@ -50,6 +50,9 @@ const contact_info = reactive({
 const avatarFile = ref(null)
 
 const resetForm = () => {
+    if (contact_info.img1 && contact_info.img1.startsWith('blob:')) {
+        URL.revokeObjectURL(contact_info.img1)
+    }
     contact_info.id = ''
     contact_info.name = ''
     contact_info.group_id = '-1'
@@ -70,6 +73,9 @@ const handleAvatarChange = (uploadFile) => {
     if (!isLt2M) {
         ElMessage.error('头像大小不能超过 2MB！')
         return
+    }
+    if (contact_info.img1 && contact_info.img1.startsWith('blob:')) {
+        URL.revokeObjectURL(contact_info.img1)
     }
     avatarFile.value = file
     contact_info.img1 = URL.createObjectURL(file)

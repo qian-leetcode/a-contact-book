@@ -25,6 +25,10 @@ const account_info = reactive({
 })
 
 const add_account = async () => {
+    if (!account_info.name || !account_info.user_name || !account_info.Password) {
+        ElMessage.warning('请完善信息（姓名、用户名、密码为必填）')
+        return
+    }
     const params = {
         id: Number(account_info.id),
         name: account_info.name,

@@ -51,6 +51,13 @@ const edit_info = reactive({
 const edit_avatar_file = ref(null)
 const edit_old_avatar_id = ref('')
 
+const close_edit = () => {
+    if (edit_info.img1 && edit_info.img1.startsWith('blob:')) {
+        URL.revokeObjectURL(edit_info.img1)
+    }
+    show_edit.value = false
+}
+
 const open_edit = (user) => {
     const matched = DictCommon_store.Dict_common_list.find(
         item => item.content === user.call_name
@@ -77,6 +84,9 @@ const handleEditAvatarChange = (uploadFile) => {
     if (!isLt2M) {
         ElMessage.error('头像大小不能超过 2MB！')
         return
+    }
+    if (edit_info.img1 && edit_info.img1.startsWith('blob:')) {
+        URL.revokeObjectURL(edit_info.img1)
     }
     edit_avatar_file.value = file
     edit_info.img1 = URL.createObjectURL(file)
@@ -162,7 +172,7 @@ onMounted(() => {
 
     <el-dialog
         v-model="show_edit"
-        @close="show_edit = false"
+        @close="close_edit"
         title="编辑联系人"
     >
         <el-form label-width="100px">
@@ -209,7 +219,7 @@ onMounted(() => {
             </el-form-item>
         </el-form>
         <template #footer>
-            <el-button @click="show_edit = false">取消</el-button>
+            <el-button @click="close_edit">取消</el-button>
             <el-button type="primary" @click="save_edit">保存</el-button>
         </template>
     </el-dialog>

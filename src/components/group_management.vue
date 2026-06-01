@@ -35,7 +35,7 @@ const group_info_form = reactive({
 })
 
 const add_group = async () => {
-    if (group_info_form.name === '' || group_info_form.idx === '') {
+    if (group_info_form.name === '' || group_info_form.idx === null || group_info_form.idx === undefined) {
         ElMessage.warning("请完善信息")
         return
     }

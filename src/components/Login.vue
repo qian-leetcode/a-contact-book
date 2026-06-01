@@ -33,6 +33,14 @@ const register_information = ref({
 })
 
 const user_register = async () => {
+    if (!register_information.value.username || !register_information.value.password || !register_information.value.name) {
+        ElMessage.warning("请完善注册信息")
+        return
+    }
+    if (register_information.value.password !== register_information.value.re_password) {
+        ElMessage.warning("两次输入的密码不一致")
+        return
+    }
     try {
         const params = {
             user_name: register_information.value.username,
@@ -44,7 +52,7 @@ const user_register = async () => {
             ElMessage.success("注册成功")
             register_visible.value = false
         } else {
-            ElMessage.error("注册失败")
+            ElMessage.error(res.data.message || "注册失败")
         }
     } catch (error) {
         ElMessage.error("注册异常，请联系工作人员");
