@@ -1,7 +1,7 @@
 # 初始化配置
 
 -  终端进入该项目的根目录
-- 输入执行
+- 输入执行(可执行最后一步 - npm install)
 - npm install vue-router@4 --save
 - npm install pinia --save
 - npm install pinia-plugin-persistedstate --save
