@@ -41,11 +41,11 @@ export const use_address_book_store = defineStore("address_book",() =>{
     const get_group_contact_list = async (params) =>{
         try {
             const res = await get_contact_info_by_(params)
-            console.log(res)
+            // console.log(res)
             if(res.data.code === 0){
                 const data = JSON.parse(res.data.data)
                 contact_list.value = data
-                console.log(data)
+                // console.log(data)
                 const map = {}
 
                 contact_list.value.forEach(item =>{
@@ -59,7 +59,8 @@ export const use_address_book_store = defineStore("address_book",() =>{
                     }
                     map[group_key].users.push(item)
                 })
-                contact_dict_statices_list.value = Object.values(map)
+                contact_group_statices_list.value = Object.values(map)
+                console.log(contact_group_statices_list.value)
                 const group_store = use_group_management_store()
                 group_store.group_list.forEach(g => {
                     if (!map[g.id]) {
@@ -85,7 +86,26 @@ export const use_address_book_store = defineStore("address_book",() =>{
     // 根据称呼得到联系人分组  -- call_name
     const get_contact_group_statices_list = async (params) =>{
         try {
-
+            const res = await get_contact_info_by_(params)
+            if(res.data.code === 0){
+                const data = JSON.parse(res.data.data)
+                contact_list.value = data
+                // console.log(data)
+                const map = {}
+                contact_list.value.forEach(item =>{
+                    const group_key = item.call_name
+                    if(!map[group_key]){
+                        map[group_key] = {
+                            call_name: item.group_id,
+                            users: []
+                        }
+                    }
+                    map[group_key].users.push(item)
+                })
+                // console.log(map)
+                contact_dict_statices_list.value = Object.values(map)
+                console.log(contact_dict_statices_list.value)
+            }
         }
         catch(err){
             console.log(err.message);
@@ -99,6 +119,7 @@ export const use_address_book_store = defineStore("address_book",() =>{
         get_group_contact_list,
         contact_group_list,
         contact_dict_statices_list,
-        get_contact_group_statices_list
+        get_contact_group_statices_list,
+        contact_group_statices_list,
     }
 })
