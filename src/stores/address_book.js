@@ -45,7 +45,7 @@ export const use_address_book_store = defineStore("address_book",() =>{
             if(res.data.code === 0){
                 const data = JSON.parse(res.data.data)
                 contact_list.value = data
-                // console.log(data)
+                console.log(data)
                 const map = {}
 
                 contact_list.value.forEach(item =>{
@@ -113,6 +113,45 @@ export const use_address_book_store = defineStore("address_book",() =>{
         }
     }
 
+    // 按字母排序
+    const contact_letter_list = ref([])
+
+    const contact_sort_by_letter = async (params) =>{
+        try {
+            const res = await get_contact_info_by_(params)
+            if(res.data.code === 0) {
+                const data = JSON.parse(res.data.data)
+                contact_list.value = data
+                const map = {}
+                contact_list.value.forEach(item =>{
+                    const letter = item.ch_group || '#'
+                    if(!map[letter]){
+                        map[letter] = {
+                            letter,
+                            users: []
+                        }
+                    }
+                    map[letter].users.push(item)
+                })
+                const sorted = Object.values(map).sort((a, b) => {
+                    const aIsLetter = /^[A-Za-z]$/.test(a.letter)
+                    const bIsLetter = /^[A-Za-z]$/.test(b.letter)
+                    if (aIsLetter && !bIsLetter) return -1
+                    if (!aIsLetter && bIsLetter) return 1
+                    return a.letter.localeCompare(b.letter)
+                })
+                contact_letter_list.value = sorted
+            }
+            else {
+                ElMessage.error(res.data.message)
+            }
+        }
+        catch (err){
+            console.log(err.message);
+            ElMessage.error("出现异常，请联系工作人员")
+        }
+    }
+
     return {
         get_contact_list,
         contact_list,
@@ -121,5 +160,7 @@ export const use_address_book_store = defineStore("address_book",() =>{
         contact_dict_statices_list,
         get_contact_group_statices_list,
         contact_group_statices_list,
+        contact_sort_by_letter,
+        contact_letter_list,
     }
 })

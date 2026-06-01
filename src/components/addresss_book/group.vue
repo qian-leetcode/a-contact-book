@@ -13,8 +13,6 @@ const query_contact = reactive({
     filter:''
 })
 
-
-
 const group_list = ref([])
 const contact_group_list = ref([])
 
