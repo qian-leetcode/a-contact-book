@@ -100,6 +100,13 @@ const save_edit = async () => {
     }
 }
 
+const handle_delete = async (user) => {
+    const res = await address_store.delete_contact(user.id)
+    if (res) {
+        await get_contact_list()
+    }
+}
+
 const get_group_list = async () => {
     await group_store.get_contact_group_by_name()
 }
@@ -137,7 +144,7 @@ onMounted(() => {
                 </div>
                 <div class="user-actions">
                     <el-button type="primary" size="small" class="edit-btn" @click="open_edit(user)">编辑</el-button>
-                    <el-button type="danger" size="small" class="delete-btn">删除</el-button>
+                    <el-button type="danger" size="small" class="delete-btn" @click="handle_delete(user)">删除</el-button>
                 </div>
             </div>
         </div>

@@ -15,3 +15,8 @@ export const update_contact_ = (data) => {
     return request.post('/Contact/Update', data)
 }
 
+// 删除联系人
+export const delete_contact_ = (id) => {
+    return request.post('/Contact/Delete', {}, { params: { id } })
+}
+
