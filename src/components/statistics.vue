@@ -21,19 +21,19 @@ const get_data = async () => {
 }
 
 function renderCharts() {
-    const groupList = address_store.contact_dict_statices_list || []
-    const callList = address_store.contact_group_statices_list || []
+    const groupStatistics = address_store.contact_group_statices_list || []
+    const callStatistics = address_store.contact_dict_statices_list || []
 
-    const groupData = groupList.map(item => ({
-        name: item.group_name,
+    const groupData = groupStatistics.map(item => ({
+        name: item.group_name || '未分组',
         value: item.users ? item.users.length : 0,
     }))
 
-    // 修正：称呼数据直接从 item 中取 call_name
-    const callData = callList.map(item => ({
-        name: item.call_name,
+    const callData = callStatistics.map(item => ({
+        name: item.call_name || '未知称呼',
         value: item.users ? item.users.length : 0,
     }))
+
 
     // 配置：显式显示名称，字体加大，并添加指示线
     const labelConfig = {

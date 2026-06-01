@@ -96,7 +96,7 @@ export const use_address_book_store = defineStore("address_book",() =>{
                     const group_key = item.call_name
                     if(!map[group_key]){
                         map[group_key] = {
-                            call_name: item.group_id,
+                            call_name: item.call_name,
                             users: []
                         }
                     }
