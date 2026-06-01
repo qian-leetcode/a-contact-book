@@ -4,8 +4,7 @@ export const upload_file_common_ = (folder, name, file) => {
     const formData = new FormData()
     formData.append('file', file)
     return request.post('/Upload/UploadFileCommon', formData, {
-        params: { folder, name },
-        headers: { 'Content-Type': 'multipart/form-data' }
+        params: { folder, name }
     })
 }
 

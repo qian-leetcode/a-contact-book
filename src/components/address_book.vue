@@ -64,32 +64,29 @@ const resetForm = () => {
     avatarFile.value = null
 }
 
-const beforeAvatarUpload = (file) => {
+const handleAvatarChange = (uploadFile) => {
+    const file = uploadFile.raw
     const isImage = /^image\/(jpeg|png|jpg)$/.test(file.type)
     if (!isImage) {
         ElMessage.error('头像只能是 JPG/PNG 格式！')
-        return false
+        return
     }
     const isLt2M = file.size / 1024 / 1024 < 2
     if (!isLt2M) {
         ElMessage.error('头像大小不能超过 2MB！')
-        return false
+        return
     }
-    return true
-}
-
-const handleAvatarChange = (file) => {
-    avatarFile.value = file.raw
-    contact_info.img1 = URL.createObjectURL(file.raw)
-}
-
-const handleAvatarError = () => {
-    ElMessage.error('头像上传失败，请重试')
+    avatarFile.value = file
+    contact_info.img1 = URL.createObjectURL(file)
 }
 
 const save_contact = async () => {
     if (!contact_info.name) {
         ElMessage.warning('请输入姓名')
+        return
+    }
+    if (Number(contact_info.group_id) <= 0) {
+        ElMessage.warning('请选择所属分组')
         return
     }
     let avatar_id = ''
@@ -161,77 +158,75 @@ onMounted(() => {
                 <el-input v-model="query_contact.filter" placeholder="姓名/手机号/称呼" clearable />
             </div>
                 <el-button type="primary" @click="show_add = true"> 新增 </el-button>
-                <el-dialog
-                    v-model="show_add"
-                    @close="resetForm"
-                    title="新增联系人"
-                >
-                    <el-form label-width="100px">
-                        <el-form-item label="姓名">
-                            <el-input v-model="contact_info.name" placeholder="请输入姓名" clearable />
-                        </el-form-item>
-                        <el-form-item label="所属分组">
-                            <el-select
-                                v-model="contact_info.group_id"
-                                placeholder="请选分组"
-                            >
-                                <el-option label="[全部]" value="-1" />
-                                <el-option
-                                    v-for="item in group_store.group_list"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id"
-                                />
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="手机号">
-                            <el-input v-model="contact_info.phone" placeholder="请输入手机号" />
-                        </el-form-item>
-                        <el-form-item label="头像">
-                            <el-upload
-                                class="avatar-uploader"
-                                action="#"
-                                :show-file-list="false"
-                                :before-upload="beforeAvatarUpload"
-                                :on-change="handleAvatarChange"
-                                :on-error="handleAvatarError"
-                                :auto-upload="false"
-                                accept="image/png, image/jpeg, image/jpg"
-                            >
-                                <img
-                                    v-if="contact_info.img1"
-                                    :src="contact_info.img1"
-                                    class="avatar"
-                                />
-                                <div v-else class="avatar-uploader-icon">
-                                    <el-icon><Plus /></el-icon>
-                                </div>
-                            </el-upload>
-                        </el-form-item>
-                        <el-form-item label="称呼">
-                            <el-select
-                                v-model="contact_info.dict"
-                            >
-                                <el-option
-                                    v-for="item in DictCommon_store.Dict_common_list"
-                                    :key="item.id"
-                                    :label="item.content"
-                                    :value="item.id"
-                                ></el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-form>
-                    <template #footer>
-                        <el-button @click="show_add = false">取消</el-button>
-                        <el-button type="primary" @click="save_contact">保存</el-button>
-                    </template>
-                </el-dialog>
                 <el-button icon="Refresh" @click="get_contact_list"> 刷新列表 </el-button>
         </el-space>
     </div>
     </el-header>
     <hr>
     <router-view></router-view>
+    <el-dialog
+        v-model="show_add"
+        @close="resetForm"
+        title="新增联系人"
+    >
+        <el-form label-width="100px">
+            <el-form-item label="姓名">
+                <el-input v-model="contact_info.name" placeholder="请输入姓名" clearable />
+            </el-form-item>
+            <el-form-item label="所属分组">
+                <el-select
+                    v-model="contact_info.group_id"
+                    placeholder="请选分组"
+                >
+                    <el-option label="[全部]" value="-1" />
+                    <el-option
+                        v-for="item in group_store.group_list"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                    />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="手机号">
+                <el-input v-model="contact_info.phone" placeholder="请输入手机号" />
+            </el-form-item>
+            <el-form-item label="头像">
+                <el-upload
+                    class="avatar-uploader"
+                    action="#"
+                    :show-file-list="false"
+                    :on-change="handleAvatarChange"
+                    :auto-upload="false"
+                    accept="image/png, image/jpeg, image/jpg"
+                >
+                    <img
+                        v-if="contact_info.img1"
+                        :src="contact_info.img1"
+                        class="avatar"
+                    />
+                    <div v-else class="avatar-uploader-icon">
+                        <el-icon><Plus /></el-icon>
+                    </div>
+                </el-upload>
+            </el-form-item>
+            <el-form-item label="称呼">
+                <el-select
+                    v-model="contact_info.dict"
+                >
+                    <el-option
+                        v-for="item in DictCommon_store.Dict_common_list"
+                        :key="item.id"
+                        :label="item.content"
+                        :value="item.id"
+                    ></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <el-button @click="show_add = false">取消</el-button>
+            <el-button type="primary" @click="save_contact">保存</el-button>
+        </template>
+    </el-dialog>
 </template>
 
 
