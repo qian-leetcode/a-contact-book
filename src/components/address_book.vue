@@ -2,7 +2,6 @@
 import {computed, onMounted, reactive, ref} from "vue";
 import {use_group_management_store} from "../stores/group_management.js";
 import {use_address_book_store} from "../stores/address_book.js";
-
 import {useRouter, useRoute} from 'vue-router'
 import use_DictCommon_store from "../stores/Dictionary_Management.js";
 import {ElMessage} from "element-plus";
@@ -17,30 +16,26 @@ const activeTab = computed({
     set: (val) => router.push(val)
 })
 
-const group_store  = use_group_management_store()
+const group_store = use_group_management_store()
 const address_store = use_address_book_store()
 
-
-// 获取分组
 const get_group = async () => {
     await group_store.get_contact_group_by_name()
 }
 
 const query_contact = reactive({
-    group_id:'-1',
-    filter:''
+    group_id: '-1',
+    filter: ''
 })
 
-// 查询所有联系人
 const get_contact_list = async () => {
     const params = {
-        group_id:Number(query_contact.group_id),
-        filter:query_contact.filter,
+        group_id: Number(query_contact.group_id),
+        filter: query_contact.filter,
     }
     await address_store.get_group_contact_list(params)
 }
 
-// 新增
 const show_add = ref(false)
 
 const contact_info = reactive({
@@ -125,59 +120,57 @@ onMounted(() => {
     get_group()
     DictCommon_store.get_dict_common_list({ type: 'CallName' })
 })
-
-
 </script>
 
 <template>
-    <el-header>
-    <div>
-        <el-space>
+    <div class="page-toolbar">
+        <div class="toolbar-left">
             <el-radio-group v-model="activeTab">
                 <el-radio-button value="/group">分组显示</el-radio-button>
                 <el-radio-button value="/letter_sort">字母排序显示</el-radio-button>
             </el-radio-group>
-            <div style="display: flex;width: 200px">
-                <span style="width: 100px">分组:</span>
-                <el-select
-                    v-model="query_contact.group_id"
-                    placeholder="请选择分组"
-                    style="width: 300px"
-                >
-                    <el-option label="[全部]" value="-1" />
-                    <el-option
-                        v-for="item in group_store.group_list"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id"
-                    />
-                </el-select>
-            </div>
-            <div style="display: flex;width: 200px" >
-                <span style="width: 100px;margin: 0 auto ">筛选:</span>
-                <el-input v-model="query_contact.filter" placeholder="姓名/手机号/称呼" clearable />
-            </div>
-                <el-button type="primary" @click="show_add = true"> 新增 </el-button>
-                <el-button icon="Refresh" @click="get_contact_list"> 刷新列表 </el-button>
-        </el-space>
+            <el-select
+                v-model="query_contact.group_id"
+                placeholder="请选择分组"
+                class="filter-select"
+            >
+                <el-option label="[全部]" value="-1" />
+                <el-option
+                    v-for="item in group_store.group_list"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+                />
+            </el-select>
+            <el-input
+                v-model="query_contact.filter"
+                placeholder="姓名/手机号/称呼"
+                clearable
+                class="filter-input"
+            />
+        </div>
+        <div class="toolbar-right">
+            <el-button type="primary" @click="show_add = true">新增</el-button>
+            <el-button icon="Refresh" @click="get_contact_list">刷新列表</el-button>
+        </div>
     </div>
-    </el-header>
-    <hr>
-    <router-view></router-view>
+
+    <div class="page-body">
+        <router-view />
+    </div>
+
     <el-dialog
         v-model="show_add"
         @close="resetForm"
         title="新增联系人"
+        width="500px"
     >
         <el-form label-width="100px">
             <el-form-item label="姓名">
                 <el-input v-model="contact_info.name" placeholder="请输入姓名" clearable />
             </el-form-item>
             <el-form-item label="所属分组">
-                <el-select
-                    v-model="contact_info.group_id"
-                    placeholder="请选分组"
-                >
+                <el-select v-model="contact_info.group_id" placeholder="请选分组" class="full-width">
                     <el-option label="[全部]" value="-1" />
                     <el-option
                         v-for="item in group_store.group_list"
@@ -199,26 +192,20 @@ onMounted(() => {
                     :auto-upload="false"
                     accept="image/png, image/jpeg, image/jpg"
                 >
-                    <img
-                        v-if="contact_info.img1"
-                        :src="contact_info.img1"
-                        class="avatar"
-                    />
+                    <img v-if="contact_info.img1" :src="contact_info.img1" class="avatar" />
                     <div v-else class="avatar-uploader-icon">
                         <el-icon><Plus /></el-icon>
                     </div>
                 </el-upload>
             </el-form-item>
             <el-form-item label="称呼">
-                <el-select
-                    v-model="contact_info.dict"
-                >
+                <el-select v-model="contact_info.dict" class="full-width">
                     <el-option
                         v-for="item in DictCommon_store.Dict_common_list"
                         :key="item.id"
                         :label="item.content"
                         :value="item.id"
-                    ></el-option>
+                    />
                 </el-select>
             </el-form-item>
         </el-form>
@@ -229,22 +216,62 @@ onMounted(() => {
     </el-dialog>
 </template>
 
-
 <style scoped>
+.page-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    margin-bottom: 16px;
+}
+.toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.filter-select {
+    width: 180px;
+}
+.filter-input {
+    width: 200px;
+}
+.page-body {
+    background: transparent;
+    min-height: 200px;
+}
+.full-width {
+    width: 100%;
+}
 .avatar-uploader {
     width: 120px;
     height: 120px;
     border: 1px dashed #d9d9d9;
-    border-radius: 4px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: border-color 0.2s;
+}
+.avatar-uploader:hover {
+    border-color: #409eff;
 }
 .avatar {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 7px;
 }
 .avatar-uploader-icon {
     font-size: 28px;

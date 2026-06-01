@@ -34,21 +34,16 @@ function renderCharts() {
         value: item.users ? item.users.length : 0,
     }))
 
-
-    // 配置：显式显示名称，字体加大，并添加指示线
     const labelConfig = {
         show: true,
-        formatter: '{b}',          // 只显示名称
+        formatter: '{b}',
         fontSize: 14,
         color: '#333',
-        // 距离饼图边缘的距离，避免标签贴边
         distance: 15,
-        // 省略较长的名称（可选）
         overflow: 'truncate',
         width: 80
     }
 
-    // 指示线（连接扇区与标签）
     const labelLineConfig = {
         show: true,
         length: 10,
@@ -111,11 +106,30 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="flex gap-5 p-5 w-full" style="height: 500px">
-        <div ref="groupRef" class="flex-1 border rounded-lg" style="height: 100%;"></div>
-        <div ref="callRef" class="flex-1 border rounded-lg" style="height: 100%;"></div>
+    <div class="page-body card">
+        <div class="chart-container">
+            <div ref="groupRef" class="chart-box"></div>
+            <div ref="callRef" class="chart-box"></div>
+        </div>
     </div>
 </template>
 
 <style scoped>
+.card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    padding: 20px;
+}
+.chart-container {
+    display: flex;
+    gap: 20px;
+    height: 500px;
+}
+.chart-box {
+    flex: 1;
+    border: 1px solid #ebeef5;
+    border-radius: 8px;
+    height: 100%;
+}
 </style>
